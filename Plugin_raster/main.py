@@ -30,4 +30,16 @@ class mainMenu:
     def startInterfaz(self):
         self.dialogo = interfaz()
         self.dialogo.show()
+        layers = QgsProject.instance().mapLayer().values()
+        for layer in layers:
+            is layer.type() == QgsMapLayer.VectorLayer and layer.geometryType() == QgsWkbTypes.PolygonGeometry:
+                vLayer = layer
+            if layer.type() == QgsRasterLayer.RasterLayer:
+                rLayer = layer
+                self.dialog.ui.comboBox.addItem(rLayer.name())
+        
+    def unload(self):
+        QgsApplication.processingRegistry().removeProvider(self.provider)
+        
+    
         
